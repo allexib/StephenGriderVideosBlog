@@ -4,8 +4,11 @@ import jsonPlaceholder from '../apis/jsonPlaceholder';
 export const fetchPostAndUsers = () => async (dispatch, getState )=> {
     await dispatch(fethPosts());
 
-    const userIds = _.uniq(_.map(getState().posts, 'userId'));
-    userIds.forEach(id => dispatch(fetchUser(id)));
+    _.chain(getState().props)
+        .map('userId')
+        .uniq()
+        .forEach(id => dispatch(fetchUser(id)))
+        .value()
 };
 
 export const fethPosts = () => async dispatch => {
